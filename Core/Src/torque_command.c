@@ -13,7 +13,6 @@ void set_torque_command(float); // how fast you want the car to go
 CarState get_state(void);
 
 
-
 #define LOWEST_PEDAL_POSITION 0;
 #define HIGHEST_PEDAL_POSITION 100; //turning pedal position into a fraction
 #define POSITION_DIFFERENCE_TOLERANCE 5;
@@ -25,7 +24,18 @@ CarState get_state(void);
 void torque_command() {
 
     for (;;) {
-        
+        float avergage_pedal_position, final_pedal_position;
+        if (abs(get_pedal_position1()-get_pedal_position2()) > POSITION_DIFFERENCE_TOLERANCE) {
+            final_pedal_position == 0;
+        }
+        else{
+            average_pedal_position= (get_pedal_position_1()- get_pedal_position2());
+            final_pedal_position = ((average_pedal_position-LOWEST_PEDAL_POSITION)/ (HIGHEST_PEDAL_POSITION-LOWEST_PEDAL_POSITION));
+            }
+        if ((final_pedal_position < LOWEST_PEDAL_POSITION) || (final_pedal_position > HIGHEST_PEDAL_POSITION)) {
+            final_pedal_position == 0;
+        }
+        set_torque_command(final_pedal_position);
         OSDelay(10);
     }
 }

@@ -12,6 +12,8 @@ int get_pedal_position2(void);
 void set_torque_command(float); // how fast you want the car to go
 CarState get_state(void);
 
+
+
 #define LOWEST_PEDAL_POSITION 0;
 #define HIGHEST_PEDAL_POSITION 100; //turning pedal position into a fraction
 #define POSITION_DIFFERENCE_TOLERANCE 5;
@@ -21,7 +23,7 @@ CarState get_state(void);
 // pedal position - lowest pedal position, then divide this number by  highest - lowest (how big the range is)
 
 void torque_command() {
-    
+
     for (;;) {
         
         OSDelay(10);

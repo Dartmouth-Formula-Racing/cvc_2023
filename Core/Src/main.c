@@ -137,6 +137,7 @@ int main(void)
   MX_CAN1_Init();
   MX_ADC1_Init();
   MX_ADC2_Init();
+  HAL_CAN_Start(&hcan1);
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -589,19 +590,43 @@ void StartDefaultTask(void *argument)
 
 	const int low_cutoff = 1500;
 	const int high_cutoff = 3400;
+	CAN_TxHeaderTypeDef   TxHeader;
+
+	uint8_t               TxData[8];
+
+	uint32_t              TxMailbox;
+	TxHeader.IDE = CAN_ID_STD;
+	TxHeader.StdId = 0x446;
+	TxHeader.RTR = CAN_RTR_DATA;
+	TxHeader.DLC = 2;
+
+	TxData[0] = 50;
+	TxData[1] = 0xAA;
 //	enum Button_State state = LOW;
 
 	for (;;) {
-		osDelay(100);
+		osDelay(500);
 //    char newmsg[] = "This is a test message from task 1!";
 //    HAL_UART_Transmit(&huart3, (uint8_t*) newmsg, strlen(newmsg), HAL_MAX_DELAY);
 //    sprintf(buf, "|-IT WORKS!!!");
 //    HAL_UART_Transmit(&huart3, (uint8_t*) buf, strlen(buf), HAL_MAX_DELAY);
 
 // Get ADC value
-		HAL_ADC_Start(&hadc1);
-		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-		raw = HAL_ADC_GetValue(&hadc1);
+//		HAL_ADC_Start(&hadc1);
+//		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+//		raw = HAL_ADC_GetValue(&hadc1);
+//		if (HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox) != HAL_OK)
+//		{
+//		   Error_Handler ();
+//
+
+		HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox);                       //CAN sending
+
+//		                int i = 0;
+//		                while((CAN_TransmitStatus(CAN1, TxMailbox) != HAL_OK) && (i != 0xFFF)){
+//		                        i++;
+//		                }
+//		                i = 0;
 //		switch (state) {
 //		case LOW:
 //			if (raw > high_cutoff) {
@@ -631,9 +656,9 @@ void StartDefaultTask(void *argument)
 
 // Convert to string and print
 //		sprintf(msg, "|- State: %hu\r\n", state);
-		sprintf(msg, "|- Voltage:", raw);
-
-		HAL_UART_Transmit(&huart3, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+//		sprintf(msg, "|- Voltage:", raw);
+//
+//		HAL_UART_Transmit(&huart3, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
 		// Pretend we have to do something else for a while
 //    HAL_Delay(1);

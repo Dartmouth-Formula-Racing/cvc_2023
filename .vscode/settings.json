@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "state_machine.c": "cpp",
+        "state_machine_for_testing.c": "cpp"
+    }
+}

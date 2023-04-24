@@ -111,6 +111,19 @@ void Error_Handler(void);
 #define LD2_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
+typedef enum CarState {
+    precharge,
+    ts_energized,
+    drive
+} CarState;
+
+void update_state_machine(void);
+CarState get_state(void);
+void rtd_button_callback(void);
+int* get_voltages(void);
+
+#define PACK_VOLTAGE 252;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
